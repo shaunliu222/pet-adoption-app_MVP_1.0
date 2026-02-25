@@ -70,8 +70,13 @@ export default function AIPhoto() {
       const petImageBlob = await petImageResponse.blob()
       formData.append('pet_image', petImageBlob, 'pet.jpg')
 
+      // 获取AI服务URL（优先使用环境变量，否则使用代理路径）
+      const aiApiUrl = import.meta.env.VITE_AI_API_URL
+        ? `${import.meta.env.VITE_AI_API_URL}/api/generate/upload`
+        : '/ai-api/generate/upload'
+
       // 调用AI API
-      const response = await fetch('/ai-api/generate/upload', {
+      const response = await fetch(aiApiUrl, {
         method: 'POST',
         body: formData,
       })
@@ -79,9 +84,23 @@ export default function AIPhoto() {
       const data = await response.json()
 
       if (data.success) {
-        // 将API返回的URL转换为前端代理URL
-        // API返回: /api/download/xxx.png -> 前端需要: /ai-api/download/xxx.png
-        const imageUrl = data.image_url ? data.image_url.replace('/api/', '/ai-api/') : null
+        // 获取AI服务基础URL
+        const aiApiBaseUrl = import.meta.env.VITE_AI_API_URL || ''
+
+        // 将API返回的URL转换为完整URL
+        // 本地开发: /api/download/xxx.png -> /ai-api/download/xxx.png
+        // 生产环境: /api/download/xxx.png -> VITE_AI_API_URL/api/download/xxx.png
+        let imageUrl = data.image_url
+        if (imageUrl) {
+          if (aiApiBaseUrl) {
+            // 生产环境：使用完整URL
+            imageUrl = `${aiApiBaseUrl}${imageUrl}`
+          } else {
+            // 本地开发：转换为代理路径
+            imageUrl = imageUrl.replace('/api/', '/ai-api/')
+          }
+        }
+
         setResult({
           imageUrl: imageUrl,
           prompt: data.prompt,
