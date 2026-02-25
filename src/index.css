@@ -1,0 +1,50 @@
+/* Google Fonts - 思源黑体 Source Han Sans */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+/* Material Symbols */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #FDE047;
+  --color-primary-dark: #EAB308;
+  --color-primary-content: #422006;
+  --color-background-light: #f8f7f5;
+  --color-background-dark: #221910;
+
+  /* 思源黑体 Source Han Sans / Noto Sans SC */
+  --font-family-display: "Noto Sans SC", "Source Han Sans CN", "思源黑体", sans-serif;
+  --font-family-body: "Noto Sans SC", "Source Han Sans CN", "思源黑体", sans-serif;
+
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+/* Base styles */
+html {
+  font-family: var(--font-family-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-background-light);
+}
+
+/* Material Symbols configuration */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400;
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
