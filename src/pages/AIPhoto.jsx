@@ -75,6 +75,9 @@ export default function AIPhoto() {
         ? `${import.meta.env.VITE_AI_API_URL}/api/generate/upload`
         : '/ai-api/generate/upload'
 
+      console.log('AI API URL:', aiApiUrl)
+      console.log('VITE_AI_API_URL:', import.meta.env.VITE_AI_API_URL)
+
       // 调用AI API
       const response = await fetch(aiApiUrl, {
         method: 'POST',
@@ -110,7 +113,8 @@ export default function AIPhoto() {
       }
     } catch (err) {
       console.error('AI generation error:', err)
-      setError('AI服务连接失败，请确保AI服务已启动 (python api.py)')
+      const aiBaseUrl = import.meta.env.VITE_AI_API_URL || '本地代理'
+      setError(`AI服务连接失败 (${aiBaseUrl})。请检查服务是否正常运行。错误: ${err.message}`)
     } finally {
       setGenerating(false)
     }
